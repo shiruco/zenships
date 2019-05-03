@@ -1,1 +1,3 @@
-# AR-eth-wallet
+# Zenships
+
+Zenships is marketplace for xr Dapps.
