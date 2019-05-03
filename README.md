@@ -1,3 +1,3 @@
 # Zenships
 
-Zenships is marketplace for xr Dapps.
+Zenships is marketplace for XR Dapps.
