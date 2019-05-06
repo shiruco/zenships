@@ -11,17 +11,17 @@ app.prepare()
 .then(() => {
   const server = express()
 
-  server.get('/p/:id', (req, res) => {
+  server.get('/p/:id', (req: any, res: any) => {
     const actualPage = '/post'
     const queryParams = { id: req.params.id }
     app.render(req, res, actualPage, queryParams)
   })
 
-  server.get('*', (req, res) => {
+  server.get('*', (req: any, res: any) => {
     return handle(req, res)
   })
 
-  server.listen(process.env.PORT || 3000, (err) => {
+  server.listen(process.env.PORT || 3000, (err: any) => {
     if (err) {
       throw err
     }

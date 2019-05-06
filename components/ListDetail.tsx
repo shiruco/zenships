@@ -1,6 +1,9 @@
 import * as React from 'react'
 
-import IDataObject from '../interfaces';
+interface IDataObject {
+  id: number
+  name: string
+}
 
 type ListDetailProps = {
   item: IDataObject;

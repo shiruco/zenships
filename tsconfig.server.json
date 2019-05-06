@@ -2,9 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": false,
-    "module": "commonjs",
+    "module": "esnext",
     "target": "es2017",
-    "lib": ["es2017"],
+    "lib": ["es2017", "dom"],
     "outDir": ".next/server"
   },
   "include": ["server/**/*.ts"],

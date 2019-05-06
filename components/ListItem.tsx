@@ -1,7 +1,10 @@
 import * as React from 'react'
 import Link from 'next/link';
 
-import IDataObject from '../interfaces'
+interface IDataObject {
+  id: number
+  name: string
+}
 
 type Props = {
   data: IDataObject,

@@ -1,6 +1,10 @@
 import * as React from "react"
 import ListItem from './ListItem'
-import IDataObject from '../interfaces'
+
+interface IDataObject {
+  id: number
+  name: string
+}
 
 type Props = {
   items: IDataObject[],
