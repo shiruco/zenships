@@ -1,6 +1,4 @@
-<div style="text-align: center; margin-top: 30px;">
-  <img src="./static/logo.png" alt="zenships" width="40%">
-</div>
+[![CircleCI](https://circleci.com/gh/shiruco/zenships/tree/master.svg?style=svg)](https://circleci.com/gh/shiruco/zenships/tree/master)
 
 # Zenships
 
