@@ -4,4 +4,4 @@
 
 # Zenships
 
-Zenships is marketplace for XR Dapps.
+Zenships is Ethereum-based Crypto Collectibles Marketplace for XR Dapp.

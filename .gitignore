@@ -1,0 +1,9 @@
+
+# dependency node modules
+node_modules/
+
+# next.js build
+.next
+
+# mac
+.DS_Store*
