@@ -1,7 +1,7 @@
-import React from "react"
+import React, { forwardRef } from "react"
 
-const VRButton = () => (
-  <button>VR mode</button>
+const VRButton = (props: any, ref: any) => (
+  <button ref={ref}>VR mode</button>
 )
 
-export default VRButton
+export default forwardRef(VRButton)

@@ -1,9 +1,11 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import * as BABYLON from 'babylonjs'
+import VRButton from '../atoms/VRButton'
 import BabylonScene from '../molecules/BabylonScene'
 import { BabylonSceneContext, IBabylonSceneContext } from '../../context/SceneContext'
 
 const MarketPlaceScene = () => {
+  const vrBtnRef = useRef(null)
 
   const create: Function = (canvas: HTMLCanvasElement, engine: BABYLON.Engine) => {
     let vrHelper: BABYLON.VRExperienceHelper
@@ -63,12 +65,13 @@ const MarketPlaceScene = () => {
         useCustomVRButton: true
       })
       vrHelper.enableInteractions()
-      //vrHelper.webVROptions.customVRButton = this.$refs.vrBtn
+      vrHelper.webVROptions.customVRButton = vrBtnRef.current!
     })
     // listeners
-    // this.$refs.vrBtn.addEventListener("click", () => {
-    //   vrHelper.enterVR()
-    // })
+    const vrBtnElm = vrBtnRef.current! as HTMLButtonElement
+    vrBtnElm.addEventListener("click", () => {
+      vrHelper.enterVR()
+    })
     return scene
   }
 
@@ -81,10 +84,13 @@ const MarketPlaceScene = () => {
   })
 
   return (
-    <BabylonSceneContext.Provider value={ctx}>
-      <BabylonScene />
-    </BabylonSceneContext.Provider>
+    <>
+      <BabylonSceneContext.Provider value={ctx}>
+        <BabylonScene />
+      </BabylonSceneContext.Provider>
+      <VRButton ref={vrBtnRef}/>
+    </>
   )
 }
 
-export default MarketPlaceScene
+export default React.memo(MarketPlaceScene)

@@ -1,20 +1,16 @@
-import React, { useContext } from "react"
+import React, { useContext, forwardRef } from "react"
 import { SceneContext } from '../../context/SceneContext'
 
-const Scene = () => {
+const Scene = (props: any, ref: any) => {
   const sceneContext = useContext(SceneContext)
 
   return (
     <canvas
       width={sceneContext.width || 100}
       height={sceneContext.height || 100}
-      ref={(canvas) => {
-        if (sceneContext.getSceneRef) {
-          sceneContext.getSceneRef(canvas)
-        }
-      }}
+      ref={ref}
     />
   )
 }
 
-export default Scene
+export default forwardRef(Scene)

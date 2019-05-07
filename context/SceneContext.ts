@@ -3,7 +3,6 @@ import { createContext } from 'react'
 export interface ISceneContext {
   width?: number,
   height?: number,
-  getSceneRef?: Function,
   createScene?: Function
 }
 
@@ -14,7 +13,6 @@ export interface IBabylonSceneContext {
 const sceneContextInitialValue = {
   width: 0,
   height: 0,
-  getSceneRef: () => {},
   createScene: () => {}
 }
 export const SceneContext = createContext<ISceneContext>(sceneContextInitialValue)

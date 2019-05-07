@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react"
+import React, { useEffect, useContext, useRef } from "react"
 import * as BABYLON from 'babylonjs'
 import Scene from '../atoms/Scene'
 import {
@@ -8,28 +8,27 @@ import {
 } from '../../context/SceneContext'
 
 const BabylonScene =  () => {
-  let canvasRef: HTMLCanvasElement
   let scene: BABYLON.Scene
   let engine: BABYLON.Engine
 
   const babylonSceneCtx = useContext(BabylonSceneContext)
   let createScene = babylonSceneCtx.createScene
 
+  const canvasRef = useRef(null)
+
   const ctx: ISceneContext = {
     width: 500,
-    height: 500,
-    getSceneRef: (canvas: HTMLCanvasElement) => {
-      canvasRef = canvas
-    }
+    height: 500
   }
 
   useEffect(() => {
-    engine = new BABYLON.Engine(canvasRef, true, {
+    const canvas = canvasRef.current
+    engine = new BABYLON.Engine(canvas, true, {
       preserveDrawingBuffer: true,
       stencil: true
     })
 
-    scene = createScene(canvasRef, engine)
+    scene = createScene(canvas, engine)
 
     engine.runRenderLoop(function() {
       if (scene) {
@@ -40,7 +39,7 @@ const BabylonScene =  () => {
 
   return (
     <SceneContext.Provider value={ctx}>
-      <Scene />
+      <Scene ref={canvasRef} />
     </SceneContext.Provider>
   )
 }

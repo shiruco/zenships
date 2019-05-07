@@ -8,11 +8,7 @@ const DemoPage = () => {
 
   const [count, setCount] = useState(0);
 
-  console.log(count, setCount)
-
-  useEffect(() => {
-    console.log("mounted")
-  })
+  useEffect(() => {})
 
   return (
     <Content>
