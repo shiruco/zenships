@@ -17,7 +17,7 @@ const BabylonScene =  () => {
   const canvasRef = useRef(null)
 
   const ctx: ISceneContext = {
-    width: 500,
+    width: 800,
     height: 500
   }
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react"
 import * as BABYLON from 'babylonjs'
+import 'babylonjs-loaders'
 import VRButton from '../atoms/VRButton'
 import BabylonScene from '../molecules/BabylonScene'
 import { BabylonSceneContext, IBabylonSceneContext } from '../../context/SceneContext'
@@ -36,29 +37,44 @@ const MarketPlaceScene = () => {
       scene
     )
     dome.rotation.y = 1.4
-    const anchor = new BABYLON.TransformNode("")
+
+    // loading model
+    let assetsManager = new BABYLON.AssetsManager(scene)
+    let meshTask = assetsManager.addMeshTask("nezumi", "", "../../static/", "nezumi2.obj");
+	  meshTask.onSuccess = function (task) {
+      task.loadedMeshes.forEach(function(mesh){
+        mesh.rotation = new BABYLON.Vector3(.5,3.3,0)
+      })
+    }
+    assetsManager.load()
+
     // GUI
-    const GUI = require("babylonjs-gui")
+    //const GUI = require("babylonjs-gui")
+
     // Create the 3D UI manager
-    const manager = new GUI.GUI3DManager(scene)
-    const panel = new GUI.SpherePanel()
-    panel.margin = 0.1
-    manager.addControl(panel)
-    panel.linkToTransformNode(anchor)
-    panel.position.z = -6.5
-    const addButton = function() {
-      var button = new GUI.HolographicButton("orientation")
-      panel.addControl(button)
-      button.text = "Image #" + panel.children.length
-    }
-    panel.blockLayout = true
-    for (let index = 0; index < 10; index++) {
-      addButton()
-    }
-    panel.blockLayout = false
-    scene.executeOnceBeforeRender(() => {
-      engine.displayLoadingUI()
-    })
+    // const anchor = new BABYLON.TransformNode("")
+    // const manager = new GUI.GUI3DManager(scene)
+    // const panel = new GUI.SpherePanel()
+    // panel.margin = 0.1
+    // manager.addControl(panel)
+    // panel.linkToTransformNode(anchor)
+    // panel.position.z = -6.5
+    // const addButton = function() {
+    //   var button = new GUI.HolographicButton("orientation")
+    //   panel.addControl(button)
+    //   button.text = "Image #" + panel.children.length
+    // }
+    // panel.blockLayout = true
+    // for (let index = 0; index < 10; index++) {
+    //   addButton()
+    // }
+    // panel.blockLayout = false
+    // scene.executeOnceBeforeRender(() => {
+    //   engine.displayLoadingUI()
+    // })
+
+    engine.loadingUIText = "loading..."
+
     scene.executeWhenReady(() => {
       engine.hideLoadingUI()
       vrHelper = scene.createDefaultVRExperience({
@@ -67,6 +83,7 @@ const MarketPlaceScene = () => {
       vrHelper.enableInteractions()
       vrHelper.webVROptions.customVRButton = vrBtnRef.current!
     })
+
     // listeners
     const vrBtnElm = vrBtnRef.current! as HTMLButtonElement
     vrBtnElm.addEventListener("click", () => {
