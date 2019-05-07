@@ -1,10 +1,5 @@
 import React from "react"
 import { SceneContextConsumer } from '../../context/SceneContext'
-// type Props = {
-//   width?: number
-//   height?: number
-//   getSceneRef?: (canvas: HTMLCanvasElement) => void
-// }
 
 const Scene = () => (
   <SceneContextConsumer>

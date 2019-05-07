@@ -3,33 +3,99 @@ import * as BABYLON from 'babylonjs'
 import Scene from '../atoms/Scene'
 import { SceneContextProvider, ISceneContext } from '../../context/SceneContext'
 
-type SceneEventArgs = {
-  engine: BABYLON.Engine,
-  scene: BABYLON.Scene,
-  canvas: HTMLCanvasElement
-}
-
-export type SceneProps = {
-  engineOptions?: BABYLON.EngineOptions,
-  adaptToDeviceRatio?: boolean,
-  onSceneMount?: (args: SceneEventArgs) => void,
-  width?: number,
-  height?: number
-}
-
 export default () => {
+  let canvasRef: HTMLCanvasElement
+  let scene: BABYLON.Scene
+  let engine: BABYLON.Engine
+
   const ctx: ISceneContext = {
     width: 500,
     height: 500,
     getSceneRef: (canvas: HTMLCanvasElement) => {
-      canvasRef = canvas;
+      canvasRef = canvas
     }
   }
 
-  let canvasRef: HTMLCanvasElement
+  const createScene: Function = (canvas: HTMLCanvasElement, engine: BABYLON.Engine) => {
+    let vrHelper: BABYLON.VRExperienceHelper
+    const scene = new BABYLON.Scene(engine)
+    const light = new BABYLON.DirectionalLight(
+      "light",
+      new BABYLON.Vector3(0, -0.5, 1.0),
+      scene
+    )
+    light.position = new BABYLON.Vector3(0, 5, -2)
+    const camera = new BABYLON.ArcRotateCamera(
+      "camera",
+      -Math.PI / 2,
+      Math.PI / 2,
+      5,
+      BABYLON.Vector3.Zero(),
+      scene
+    )
+    camera.attachControl(canvas, true)
+    camera.inputs.attached.mousewheel.detachControl(canvas)
+    const dome = new BABYLON.PhotoDome(
+      "dome",
+      require("../../static/sample2.jpg"),
+      {
+        resolution: 32,
+        size: 1000
+      },
+      scene
+    )
+    dome.rotation.y = 1.4
+    const anchor = new BABYLON.TransformNode("")
+    // GUI
+    const GUI = require("babylonjs-gui")
+    // Create the 3D UI manager
+    const manager = new GUI.GUI3DManager(scene)
+    const panel = new GUI.SpherePanel()
+    panel.margin = 0.1
+    manager.addControl(panel)
+    panel.linkToTransformNode(anchor)
+    panel.position.z = -6.5
+    const addButton = function() {
+      var button = new GUI.HolographicButton("orientation")
+      panel.addControl(button)
+      button.text = "Image #" + panel.children.length
+    }
+    panel.blockLayout = true
+    for (let index = 0; index < 10; index++) {
+      addButton()
+    }
+    panel.blockLayout = false
+    scene.executeOnceBeforeRender(() => {
+      engine.displayLoadingUI()
+    })
+    scene.executeWhenReady(() => {
+      engine.hideLoadingUI()
+      vrHelper = scene.createDefaultVRExperience({
+        useCustomVRButton: true
+      })
+      vrHelper.enableInteractions()
+      //vrHelper.webVROptions.customVRButton = this.$refs.vrBtn
+    })
+    // listeners
+    // this.$refs.vrBtn.addEventListener("click", () => {
+    //   vrHelper.enterVR()
+    // })
+    return scene
+  }
 
   useEffect(() => {
-    console.log(canvasRef)
+    engine = new BABYLON.Engine(canvasRef, true, {
+      preserveDrawingBuffer: true,
+      stencil: true
+    })
+
+    scene = createScene(canvasRef, engine)
+
+    engine.runRenderLoop(function() {
+      if (scene) {
+        scene.render()
+      }
+    })
   })
 
   return (

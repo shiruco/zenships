@@ -6,6 +6,6 @@ export interface ISceneContext {
   getSceneRef?: Function
 }
 
-const ctxt = createContext<ISceneContext | null>(null)
-export const SceneContextProvider = ctxt.Provider;
-export const SceneContextConsumer = ctxt.Consumer;
+const ctx = createContext<ISceneContext | null>(null)
+export const SceneContextProvider = ctx.Provider;
+export const SceneContextConsumer = ctx.Consumer;
